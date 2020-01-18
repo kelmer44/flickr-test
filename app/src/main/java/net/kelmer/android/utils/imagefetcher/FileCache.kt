@@ -1,7 +1,6 @@
 package net.kelmer.android.utils.imagefetcher
 
 import android.content.Context
-import android.os.Environment
 import java.io.File
 import kotlin.math.abs
 

@@ -36,10 +36,10 @@ class ImageFetcher(context: Context) {
         executorService.submit(ImageLoader(ViewAndUrl(url, imageView)))
     }
 
-    private fun getBitmap(url: String): Bitmap? {
+    private fun getBitmap(url: String, width: Int, height: Int): Bitmap? {
         val f = fileCache.getFile(url)
 
-        val b = decodeFile(f)
+        val b = decodeFile(f, width, height)
         if (b != null) {
             return b
         }
@@ -52,7 +52,7 @@ class ImageFetcher(context: Context) {
             val outputStream = FileOutputStream(f)
             copyStream(inputStream, outputStream)
             outputStream.close()
-            decodeFile(f)
+            decodeFile(f, width, height)
 
         } catch (e: Exception) {
             Log.e(TAG, "Error getting bitmap", e)
@@ -60,25 +60,49 @@ class ImageFetcher(context: Context) {
         }
     }
 
-    private fun decodeFile(f: File): Bitmap? {
+    private fun decodeFile(f: File, ivWidth: Int, ivHeight: Int): Bitmap? {
         try {
 
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
             BitmapFactory.decodeStream(FileInputStream(f), null, options)
 
-            val requiredSize = 70
-            var widthTmp = options.outWidth
-            var heightTmp = options.outHeight
+            val bmpWidth = options.outWidth
+            val bmpHeight = options.outHeight
+
+
+            var limitByWidth: Boolean
+            var limitingSize: Int
+            if (ivHeight > ivWidth) {
+                if (bmpWidth > bmpHeight) {
+                    limitByWidth = false
+                    limitingSize = ivWidth
+                } else {
+                    limitByWidth = true
+                    limitingSize = ivHeight
+                }
+            } else {
+                if (bmpWidth > bmpHeight) {
+                    limitByWidth = false
+                    limitingSize = ivWidth
+                } else {
+                    limitByWidth = true
+                    limitingSize = ivHeight
+                }
+            }
+
+
+            val requiredSize = limitingSize
+            var widthTmp = bmpWidth
+            var heightTmp = bmpHeight
             var scale = 1
             while (true) {
-                if (widthTmp / 2 < requiredSize || heightTmp / 2 < requiredSize)
+                if ((limitByWidth && widthTmp / 2 < requiredSize) || (!limitByWidth && heightTmp / 2 < requiredSize))
                     break
                 widthTmp /= 2
                 heightTmp /= 2
                 scale *= 2
             }
-
             //decode
             val decodeOptions = BitmapFactory.Options()
             decodeOptions.inSampleSize = scale
@@ -114,12 +138,13 @@ class ImageFetcher(context: Context) {
             if (imageViewReused(image)) {
                 return
             }
-            val bmp = getBitmap(image.url)
+            val bmp = getBitmap(image.url, image.imageView.width, image.imageView.height)
             val displayer = BitmapDisplayer(bmp, image)
             (image.imageView.context as Activity).runOnUiThread(displayer)
         }
 
     }
+
     private fun imageViewReused(image: ViewAndUrl): Boolean {
         val tag = imageViews[image.imageView]
         return tag == null || tag != image.url
@@ -127,13 +152,12 @@ class ImageFetcher(context: Context) {
 
     inner class BitmapDisplayer(private val b: Bitmap?, private val image: ViewAndUrl) : Runnable {
         override fun run() {
-            if(imageViewReused(image)){
+            if (imageViewReused(image)) {
                 return
             }
-            if(b!=null){
+            if (b != null) {
                 image.imageView.setImageBitmap(b)
-            }
-            else {
+            } else {
                 image.imageView.setImageResource(R.drawable.ic_image_error)
             }
         }

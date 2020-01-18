@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
             .get(MainViewModel::class.java)
 
         photolist_recyclerview.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 3)
+//            layoutManager = GridLayoutManager(this@MainActivity, 3)
+            layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = photoAdapter
         }
 

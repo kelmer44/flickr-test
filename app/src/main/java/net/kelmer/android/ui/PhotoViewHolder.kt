@@ -13,9 +13,9 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(photo: Photo) = with(itemView){
 //
-//        Glide.with(itemView)
-//            .load(photo.url)
-//            .into(item_photo_image)
+        Glide.with(itemView)
+            .load(photo.url)
+            .into(item_photo_image)
 
         ImageFetcher(itemView.context)
             .load(photo.url, item_photo_image, R.drawable.ic_search_white)

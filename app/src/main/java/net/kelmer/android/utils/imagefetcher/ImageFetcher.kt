@@ -49,6 +49,7 @@ class ImageFetcher(context: Context) {
             val connection = imageUrl.openConnection() as HttpURLConnection
             connection.instanceFollowRedirects = true
             val inputStream = connection.inputStream
+            Log.i(TAG, "Opening Output Stream for ${f.name}")
             val outputStream = FileOutputStream(f)
             copyStream(inputStream, outputStream)
             outputStream.close()
@@ -65,46 +66,29 @@ class ImageFetcher(context: Context) {
 
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
+            Log.i(TAG, "Decoding bitmap for ${f.name}")
             BitmapFactory.decodeStream(FileInputStream(f), null, options)
 
+            //Width and height of the bitmap
             val bmpWidth = options.outWidth
             val bmpHeight = options.outHeight
 
-
-            var limitByWidth: Boolean
-            var limitingSize: Int
-            if (ivHeight > ivWidth) {
-                if (bmpWidth > bmpHeight) {
-                    limitByWidth = false
-                    limitingSize = ivWidth
-                } else {
-                    limitByWidth = true
-                    limitingSize = ivHeight
-                }
-            } else {
-                if (bmpWidth > bmpHeight) {
-                    limitByWidth = false
-                    limitingSize = ivWidth
-                } else {
-                    limitByWidth = true
-                    limitingSize = ivHeight
-                }
-            }
-
-
-            val requiredSize = limitingSize
+//            Log.w(TAG, "For image ${f.name} bmp size is ($bmpWidth, $bmpHeight) and iv size is $ivWidth,$ivHeight, resulting size will be $limitingSize limiting by ${if(limitByWidth) "WIDHT" else "HEIGHT" }")
+            val requiredSize = 70
             var widthTmp = bmpWidth
             var heightTmp = bmpHeight
             var scale = 1
             while (true) {
-                if ((limitByWidth && widthTmp / 2 < requiredSize) || (!limitByWidth && heightTmp / 2 < requiredSize))
+                if ((widthTmp / 2 < requiredSize) || heightTmp / 2 < requiredSize)
                     break
                 widthTmp /= 2
                 heightTmp /= 2
                 scale *= 2
             }
+
             //decode
             val decodeOptions = BitmapFactory.Options()
+            Log.w(TAG, "Scale size will be $scale")
             decodeOptions.inSampleSize = scale
             return BitmapFactory.decodeStream(FileInputStream(f), null, decodeOptions)
 

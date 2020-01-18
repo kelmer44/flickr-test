@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import net.kelmer.android.common.resolve
 import net.kelmer.android.flickrsearch.R
@@ -36,8 +37,8 @@ class MainActivity : AppCompatActivity() {
             .get(MainViewModel::class.java)
 
         photolist_recyclerview.apply {
-//            layoutManager = GridLayoutManager(this@MainActivity, 3)
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+//            layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = photoAdapter
         }
 

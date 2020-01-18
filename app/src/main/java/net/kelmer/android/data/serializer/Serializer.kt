@@ -1,4 +1,4 @@
-package net.kelmer.android.data
+package net.kelmer.android.data.serializer
 
 import net.kelmer.android.data.model.ApiResponse
 

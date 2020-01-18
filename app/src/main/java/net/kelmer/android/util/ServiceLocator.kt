@@ -1,12 +1,11 @@
 package net.kelmer.android.util
 
-import android.app.Application
-import android.content.Context
 import com.google.gson.GsonBuilder
-import net.kelmer.android.data.GsonSerializer
-import net.kelmer.android.data.Serializer
+import net.kelmer.android.data.serializer.GsonSerializer
+import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.data.repository.PhotoRepositoryImpl
+import net.kelmer.android.data.serializer.CustomSerializer
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.data.service.FlickrServiceImpl
 import net.kelmer.android.utils.HttpClient
@@ -52,11 +51,10 @@ open class DefaultServiceLocator : ServiceLocator {
     }
 
     override fun serializer() : Serializer {
-        return GsonSerializer(gson())
+        return CustomSerializer()
     }
 
     private fun gson() = GsonBuilder()
-        .setLenient()
         .create()
 
     override fun client(): HttpClient {

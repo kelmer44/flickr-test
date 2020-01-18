@@ -1,10 +1,9 @@
 package net.kelmer.android.data.service
 
 import io.reactivex.Single
-import net.kelmer.android.data.Serializer
+import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.model.ApiResponse
 import net.kelmer.android.utils.HttpClient
-import java.lang.Exception
 
 
 class FlickrServiceImpl(private val baseUrl: String, private val serializer: Serializer, private val client: HttpClient) : FlickrService {

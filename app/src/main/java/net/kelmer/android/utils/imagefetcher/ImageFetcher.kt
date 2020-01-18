@@ -73,9 +73,9 @@ class ImageFetcher(context: Context) {
             val bmpWidth = options.outWidth
             val bmpHeight = options.outHeight
 
-//            Log.w(TAG, "For image ${f.name} bmp size is ($bmpWidth, $bmpHeight) and iv size is $ivWidth,$ivHeight, resulting size will be $limitingSize limiting by ${if(limitByWidth) "WIDHT" else "HEIGHT" }")
-            val requiredSize = 70
+            val requiredSize = ivWidth.coerceAtMost(bmpWidth)
             var widthTmp = bmpWidth
+            Log.w(TAG, "For image ${f.name} bmp size is ($bmpWidth, $bmpHeight) and iv size is $ivWidth,$ivHeight, resulting size will be $requiredSize }")
             var heightTmp = bmpHeight
             var scale = 1
             while (true) {

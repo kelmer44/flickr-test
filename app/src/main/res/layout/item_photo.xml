@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/item_photo_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/backgrounds/scenic" />

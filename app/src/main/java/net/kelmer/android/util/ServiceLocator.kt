@@ -1,8 +1,8 @@
 package net.kelmer.android.util
 
-import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.data.repository.PhotoRepositoryImpl
+import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.serializer.CustomSerializer
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.data.service.FlickrServiceImpl
@@ -52,11 +52,8 @@ open class DefaultServiceLocator : ServiceLocator {
         return CustomSerializer()
     }
 
-
     override fun client(): HttpClient {
         return StringResponseHttpClient()
     }
-
-
 
 }

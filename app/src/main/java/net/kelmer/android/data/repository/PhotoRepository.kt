@@ -1,10 +1,9 @@
 package net.kelmer.android.data.repository
 
-import io.reactivex.Single
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.domain.Photo
+import net.kelmer.android.network.Callback
 
 interface PhotoRepository {
 
-    fun search(term: String) : Single<List<Photo>>
+    fun search(term: String, callback: Callback<List<Photo>>)
 }

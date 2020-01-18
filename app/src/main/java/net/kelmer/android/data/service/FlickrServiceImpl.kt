@@ -1,18 +1,13 @@
 package net.kelmer.android.data.service
 
-import android.annotation.SuppressLint
 import io.reactivex.Single
-import net.kelmer.android.data.GsonSerializer
+import net.kelmer.android.data.Serializer
 import net.kelmer.android.data.model.ApiResponse
-import net.kelmer.android.utils.StringResponseHttpClient
+import net.kelmer.android.utils.HttpClient
 import java.lang.Exception
 
 
-class FlickrServiceImpl(private val baseUrl: String) : FlickrService {
-
-    private val serializer = GsonSerializer()
-    private val client = StringResponseHttpClient()
-
+class FlickrServiceImpl(private val baseUrl: String, private val serializer: Serializer, private val client: HttpClient) : FlickrService {
 
     override fun getSearch(apiKey: String, term: String): Single<ApiResponse> {
         return Single.fromCallable {

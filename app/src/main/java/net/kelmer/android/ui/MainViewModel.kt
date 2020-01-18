@@ -10,15 +10,9 @@ import io.reactivex.schedulers.Schedulers
 import net.kelmer.android.common.Resource
 import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.repository.PhotoRepository
-import net.kelmer.android.data.repository.PhotoRepositoryImpl
-import net.kelmer.android.data.service.FlickrService
-import net.kelmer.android.data.service.FlickrServiceImpl
 import net.kelmer.android.domain.Photo
 
-class MainViewModel : ViewModel() {
-
-    private val service : FlickrService = FlickrServiceImpl("https://api.flickr.com")
-    private val photoRepository: PhotoRepository = PhotoRepositoryImpl(service)
+class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 

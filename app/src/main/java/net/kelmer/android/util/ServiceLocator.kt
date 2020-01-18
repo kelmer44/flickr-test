@@ -19,11 +19,10 @@ interface ServiceLocator {
 
         private val LOCK = Any()
         private var instance: ServiceLocator? = null
-        fun instance(context: Context): ServiceLocator {
+        fun instance(): ServiceLocator {
             synchronized(LOCK) {
                 if (instance == null) {
-                    instance = DefaultServiceLocator(
-                        app = context.applicationContext as Application)
+                    instance = DefaultServiceLocator()
                 }
                 return instance!!
             }
@@ -38,7 +37,7 @@ interface ServiceLocator {
     fun client(): HttpClient
 }
 
-open class DefaultServiceLocator(val app: Application) : ServiceLocator {
+open class DefaultServiceLocator : ServiceLocator {
 
 
     override fun baseUrl() = "https://api.flickr.com"
@@ -53,8 +52,13 @@ open class DefaultServiceLocator(val app: Application) : ServiceLocator {
     }
 
     override fun serializer() : Serializer {
-        return GsonSerializer()
+        return GsonSerializer(gson())
     }
+
+    private fun gson() = GsonBuilder()
+        .setLenient()
+        .create()
+
     override fun client(): HttpClient {
         return  StringResponseHttpClient()
     }

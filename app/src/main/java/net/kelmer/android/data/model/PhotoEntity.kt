@@ -20,9 +20,6 @@ data class PhotoEntity(
     val title: String,
     val secret: String,
     val server: Int,
-    val farm: Int,
-    val isPublic: Boolean,
-    val isFriend: Boolean,
-    val isFamily: Boolean
+    val farm: Int
 ) {
 }

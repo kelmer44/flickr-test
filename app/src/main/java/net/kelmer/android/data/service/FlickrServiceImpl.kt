@@ -1,12 +1,9 @@
 package net.kelmer.android.data.service
 
-import android.annotation.SuppressLint
 import io.reactivex.Single
-import net.kelmer.android.data.GsonSerializer
 import net.kelmer.android.data.Serializer
 import net.kelmer.android.data.model.ApiResponse
 import net.kelmer.android.utils.HttpClient
-import net.kelmer.android.utils.StringResponseHttpClient
 import java.lang.Exception
 
 

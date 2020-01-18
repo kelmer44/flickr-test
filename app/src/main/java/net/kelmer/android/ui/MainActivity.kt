@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        serviceLocator = ServiceLocator.instance(this)
+        serviceLocator = ServiceLocator.instance()
 
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory(serviceLocator.getRepository()))

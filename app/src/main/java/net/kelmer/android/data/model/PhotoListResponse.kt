@@ -1,6 +1,5 @@
 package net.kelmer.android.data.model
 
-import com.google.gson.annotations.SerializedName
 
 data class PhotoListResponse(
     val page: Int,

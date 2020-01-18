@@ -7,7 +7,7 @@ class GsonSerializer  : Serializer{
 
     val gson = GsonBuilder().create()
 
-    override fun deserialize(json: String): ApiResponse? {
+    override fun deserialize(json: String): ApiResponse {
         return gson.fromJson<ApiResponse>(json, ApiResponse::class.java)
     }
 }

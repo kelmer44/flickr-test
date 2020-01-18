@@ -8,7 +8,7 @@ import net.kelmer.android.utils.StringResponseHttpClient
 import java.lang.Exception
 
 
-class FlickrServiceImpl(val baseUrl: String) : FlickrService {
+class FlickrServiceImpl(private val baseUrl: String) : FlickrService {
 
     private val serializer = GsonSerializer()
     private val client = StringResponseHttpClient()
@@ -16,19 +16,19 @@ class FlickrServiceImpl(val baseUrl: String) : FlickrService {
 
     override fun getSearch(apiKey: String, term: String): Single<ApiResponse> {
         return Single.fromCallable {
-            searchRequest(apiKey, term) ?: throw Exception("Could not retrieve")
+            searchRequest(apiKey, term)
         }
 
     }
 
-    private fun searchRequest(apiKey: String, term: String) : ApiResponse?{
+    private fun searchRequest(apiKey: String, term: String): ApiResponse {
         val fullUrl =
             "$baseUrl/services/rest?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=$apiKey&text=$term"
-        val response = client.doGet(fullUrl) ?: return null
+        val response = client.doGet(fullUrl)
         return deserialize(response)
     }
 
-    private fun deserialize(response: String): ApiResponse? {
+    private fun deserialize(response: String): ApiResponse {
         return serializer.deserialize(response)
     }
 }

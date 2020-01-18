@@ -1,7 +1,6 @@
 package net.kelmer.android.data.repository
 
 import io.reactivex.Single
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.domain.Photo
 import net.kelmer.android.domain.PhotoAdapter

@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if(newText!=null && newText.length > 3) {
+                if(newText.length > 3) {
                     viewModel.search(newText)
                 }
                 return true

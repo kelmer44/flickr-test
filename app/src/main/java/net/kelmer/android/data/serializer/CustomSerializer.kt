@@ -3,7 +3,6 @@ package net.kelmer.android.data.serializer
 import net.kelmer.android.data.model.ApiResponse
 import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.model.PhotoListResponse
-import org.json.JSONArray
 import org.json.JSONObject
 
 

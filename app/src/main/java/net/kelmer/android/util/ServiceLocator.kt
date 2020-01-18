@@ -6,8 +6,8 @@ import net.kelmer.android.data.repository.PhotoRepositoryImpl
 import net.kelmer.android.data.serializer.CustomSerializer
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.data.service.FlickrServiceImpl
-import net.kelmer.android.utils.HttpClient
-import net.kelmer.android.utils.StringResponseHttpClient
+import net.kelmer.android.utils.client.HttpClient
+import net.kelmer.android.utils.client.StringResponseHttpClient
 
 interface ServiceLocator {
 
@@ -54,7 +54,7 @@ open class DefaultServiceLocator : ServiceLocator {
 
 
     override fun client(): HttpClient {
-        return  StringResponseHttpClient()
+        return StringResponseHttpClient()
     }
 
 

@@ -1,4 +1,4 @@
-package net.kelmer.android.utils
+package net.kelmer.android.utils.client
 
 import java.io.BufferedReader
 import java.io.IOException
@@ -20,10 +20,16 @@ class StringResponseHttpClient : HttpClient {
 
             val responseCode = connection.responseCode
             if (responseCode != 200) {
-                throw HttpException(responseCode, "Http request error")
+                throw HttpException(
+                    responseCode,
+                    "Http request error"
+                )
             }
 
-            val inputStream = connection.inputStream ?: throw HttpException(responseCode, "Error executing request")
+            val inputStream = connection.inputStream ?: throw HttpException(
+                responseCode,
+                "Error executing request"
+            )
             reader = BufferedReader(InputStreamReader(inputStream))
 
 

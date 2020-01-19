@@ -1,6 +1,5 @@
 package net.kelmer.android.network.task
 
-
 interface Callback<T> {
 
     fun onResponse(data: T)

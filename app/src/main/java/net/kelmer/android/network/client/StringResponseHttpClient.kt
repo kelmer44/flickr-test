@@ -8,7 +8,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class StringResponseHttpClient : HttpClient {
-    override fun doGet(serviceUrl: String) : String {
+    override fun doGet(serviceUrl: String): String {
 
         var reader: BufferedReader? = null
         try {
@@ -32,22 +32,19 @@ class StringResponseHttpClient : HttpClient {
             )
             reader = BufferedReader(InputStreamReader(inputStream))
 
-
             val readLines = reader.readLines()
             if (readLines.isEmpty()) {
                 return ""
             }
 
             return readLines.joinToString("\n")
-        }
-        catch (e: IOException){
+        } catch (e: IOException) {
             throw e
-        }
-        finally {
-            if(reader!=null){
-                try{
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close()
-                } catch (e: Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }

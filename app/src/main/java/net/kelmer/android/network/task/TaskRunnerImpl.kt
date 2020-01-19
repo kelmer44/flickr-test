@@ -43,5 +43,4 @@ class TaskRunnerImpl<T>(private val task: Task<T>) : TaskRunner<T> {
         Log.v(TAG, "Cancelling now all tasks")
         executor.shutdownNow()
     }
-
 }

@@ -8,7 +8,7 @@ import net.kelmer.android.domain.Photo
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(photo: Photo) = with(itemView){
+    fun bind(photo: Photo) = with(itemView) {
         Glide.with(itemView)
             .load(photo.url)
             .into(item_photo_image)

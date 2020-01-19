@@ -1,6 +1,5 @@
 package net.kelmer.android.data.model
 
-
 data class PhotoListResponse(
     val page: Int,
     val pages: Int,

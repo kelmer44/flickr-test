@@ -1,9 +1,14 @@
 package net.kelmer.android.ui
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import java.util.concurrent.Future
 import net.kelmer.android.common.Resource
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.domain.PhotoListPage
@@ -11,18 +16,15 @@ import net.kelmer.android.network.task.Callback
 import net.kelmer.android.network.task.FutureTask
 import net.kelmer.android.network.task.TaskRunner
 import org.hamcrest.CoreMatchers.instanceOf
-import org.junit.Assert.*
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.notification.Failure
-import org.mockito.ArgumentCaptor
-import java.util.concurrent.Future
 
 class MainViewModelTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
-
 
     private val TEST_ERROR = "Test error"
     private val TEST_SEARCH = "Test search"
@@ -41,7 +43,6 @@ class MainViewModelTest {
                     (it.arguments[0] as Callback<*>).onFailure(Throwable(TEST_ERROR))
                     return@thenAnswer FutureTask(futureMock)
                 }
-
         }
 
         val photoRepository: PhotoRepository = mock {
@@ -50,14 +51,12 @@ class MainViewModelTest {
             }.doReturn(deferredTaskRunner)
         }
 
-        val observer: Observer<Resource<PhotoListPage>> = mock {  }
+        val observer: Observer<Resource<PhotoListPage>> = mock { }
 
         val mainViewModel = MainViewModel(photoRepository)
         mainViewModel.photoLiveData.observeForever(observer)
 
         mainViewModel.search(TEST_SEARCH, TEST_PAGE)
-
-
 
         val captor = argumentCaptor<Resource<PhotoListPage>>()
         captor.run {
@@ -67,9 +66,7 @@ class MainViewModelTest {
             assertThat(capturedValues[1], instanceOf(Resource.Failure::class.java))
             assertEquals((capturedValues[1] as Resource.Failure).errorMessage, TEST_ERROR)
         }
-
     }
-
 
     @Test
     fun `When request succeds, we map into Success object preceeded by InProgress`() {
@@ -85,7 +82,6 @@ class MainViewModelTest {
                     (it.arguments[0] as Callback<PhotoListPage>).onResponse(mockData)
                     return@thenAnswer FutureTask(futureMock)
                 }
-
         }
 
         val photoRepository: PhotoRepository = mock {
@@ -94,14 +90,12 @@ class MainViewModelTest {
             }.doReturn(deferredTaskRunner)
         }
 
-        val observer: Observer<Resource<PhotoListPage>> = mock {  }
+        val observer: Observer<Resource<PhotoListPage>> = mock { }
 
         val mainViewModel = MainViewModel(photoRepository)
         mainViewModel.photoLiveData.observeForever(observer)
 
         mainViewModel.search(TEST_SEARCH, TEST_PAGE)
-
-
 
         val captor = argumentCaptor<Resource<PhotoListPage>>()
         captor.run {
@@ -112,5 +106,4 @@ class MainViewModelTest {
             assertEquals((capturedValues[1] as Resource.Success).data, mockData)
         }
     }
-
 }

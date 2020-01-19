@@ -1,11 +1,9 @@
 package net.kelmer.android.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.kelmer.android.common.Resource
 import net.kelmer.android.data.repository.PhotoRepository
-import net.kelmer.android.domain.Photo
 import net.kelmer.android.domain.PhotoListPage
 import net.kelmer.android.network.task.Callback
 import net.kelmer.android.network.task.FutureTask
@@ -17,10 +15,8 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
     private var lastTask: FutureTask<*>? = null
     var lastPage: PhotoListPage? = null
 
-
-
     fun search(term: String, page: Int = 1) {
-        //Cancel if there was a previous request
+        // Cancel if there was a previous request
         lastTask?.cancel()
 
         photoLiveData.value = Resource.inProgress()
@@ -44,7 +40,7 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
 
     fun loadMore() {
         lastPage?.run {
-            if(hasNextPage) {
+            if (hasNextPage) {
                 search(this.term, this.page + 1)
             }
         }

@@ -7,14 +7,18 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import net.kelmer.android.flickrsearch.R
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
+import java.util.Collections
+import java.util.WeakHashMap
 import java.util.concurrent.Executors
-
+import net.kelmer.android.flickrsearch.R
 
 class ImageFetcher(context: Context) {
     companion object {
@@ -24,7 +28,6 @@ class ImageFetcher(context: Context) {
     private val fileCache = FileCache(context)
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
     private val executorService = Executors.newFixedThreadPool(5)
-
 
     fun load(url: String, imageView: ImageView, @DrawableRes loader: Int) {
         imageViews[imageView] = url
@@ -54,7 +57,6 @@ class ImageFetcher(context: Context) {
             copyStream(inputStream, outputStream)
             outputStream.close()
             decodeFile(f, width, height)
-
         } catch (e: Exception) {
             Log.e(TAG, "Error getting bitmap", e)
             null
@@ -69,7 +71,7 @@ class ImageFetcher(context: Context) {
             Log.i(TAG, "Decoding bitmap for ${f.name}")
             BitmapFactory.decodeStream(FileInputStream(f), null, options)
 
-            //Width and height of the bitmap
+            // Width and height of the bitmap
             val bmpWidth = options.outWidth
             val bmpHeight = options.outHeight
 
@@ -86,19 +88,16 @@ class ImageFetcher(context: Context) {
                 scale *= 2
             }
 
-            //decode
+            // decode
             val decodeOptions = BitmapFactory.Options()
             Log.w(TAG, "Scale size will be $scale")
             decodeOptions.inSampleSize = scale
             return BitmapFactory.decodeStream(FileInputStream(f), null, decodeOptions)
-
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding bitmap", e)
         }
         return null
-
     }
-
 
     private fun copyStream(istream: InputStream, ostream: OutputStream) {
         val bufferSize = 1024
@@ -114,7 +113,6 @@ class ImageFetcher(context: Context) {
 
             Log.e(TAG, "Error copying stream", e)
         }
-
     }
 
     inner class ImageLoader(private val image: ViewAndUrl) : Runnable {
@@ -126,7 +124,6 @@ class ImageFetcher(context: Context) {
             val displayer = BitmapDisplayer(bmp, image)
             (image.imageView.context as Activity).runOnUiThread(displayer)
         }
-
     }
 
     private fun imageViewReused(image: ViewAndUrl): Boolean {
@@ -145,10 +142,7 @@ class ImageFetcher(context: Context) {
                 image.imageView.setImageResource(R.drawable.ic_image_error)
             }
         }
-
-
     }
-
 
     data class ViewAndUrl(val url: String, val imageView: ImageView)
 }

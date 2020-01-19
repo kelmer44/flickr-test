@@ -5,12 +5,7 @@ import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.model.PhotoListResponse
 import org.json.JSONObject
 
-
-
-
-
 class CustomSerializer : Serializer {
-
 
     override fun deserialize(json: String): ApiResponse {
         val root = JSONObject(json)
@@ -25,8 +20,8 @@ class CustomSerializer : Serializer {
         val total = photos.getInt("total")
         val photo = photos.getJSONArray("photo")
 
-        val actualPhotos  = mutableListOf<PhotoEntity>()
-        for(i in 0 until photo.length()){
+        val actualPhotos = mutableListOf<PhotoEntity>()
+        for (i in 0 until photo.length()) {
             val thisPhoto = photo.getJSONObject(i)
             val id = thisPhoto.getString("id")
             val owner = thisPhoto.getString("owner")
@@ -34,9 +29,9 @@ class CustomSerializer : Serializer {
             val secret = thisPhoto.getString("secret")
             val server = thisPhoto.getInt("server")
             val farm = thisPhoto.getInt("farm")
-            actualPhotos.add(PhotoEntity(id,owner, title, secret, server, farm))
+            actualPhotos.add(PhotoEntity(id, owner, title, secret, server, farm))
         }
 
-        return ApiResponse(PhotoListResponse(page,pages,perPage, total, photo = actualPhotos),stat)
+        return ApiResponse(PhotoListResponse(page, pages, perPage, total, photo = actualPhotos), stat)
     }
 }

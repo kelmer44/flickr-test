@@ -21,5 +21,4 @@ data class PhotoEntity(
     val secret: String,
     val server: Int,
     val farm: Int
-) {
-}
+)

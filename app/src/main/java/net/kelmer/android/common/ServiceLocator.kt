@@ -1,26 +1,27 @@
 package net.kelmer.android.common
 
+import android.content.Context
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.data.repository.PhotoRepositoryImpl
-import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.serializer.CustomSerializer
+import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.data.service.FlickrServiceImpl
+import net.kelmer.android.flickrsearch.R
 import net.kelmer.android.network.client.HttpClient
 import net.kelmer.android.network.client.StringResponseHttpClient
 
 interface ServiceLocator {
 
-
     companion object {
 
         private val LOCK = Any()
         private var instance: ServiceLocator? = null
-        fun instance(): ServiceLocator {
+        fun instance(context: Context): ServiceLocator {
             synchronized(LOCK) {
                 if (instance == null) {
                     instance =
-                        DefaultServiceLocator()
+                        DefaultServiceLocator(context)
                 }
                 return instance!!
             }
@@ -35,26 +36,24 @@ interface ServiceLocator {
     fun client(): HttpClient
 }
 
-open class DefaultServiceLocator : ServiceLocator {
+class DefaultServiceLocator(val context: Context) : ServiceLocator {
 
+    override fun baseUrl() = context.getString(R.string.base_url)
+    override fun apiKey() = context.getString(R.string.api_key)
 
-    override fun baseUrl() = "https://api.flickr.com"
-    override fun apiKey() = "12f7e02a64502c622306c2a9145997a6"
-
-    override fun getRepository() : PhotoRepository {
+    override fun getRepository(): PhotoRepository {
         return PhotoRepositoryImpl(flickrService(), apiKey())
     }
 
-    override fun flickrService() : FlickrService {
+    override fun flickrService(): FlickrService {
         return FlickrServiceImpl(baseUrl(), serializer(), client())
     }
 
-    override fun serializer() : Serializer {
+    override fun serializer(): Serializer {
         return CustomSerializer()
     }
 
     override fun client(): HttpClient {
         return StringResponseHttpClient()
     }
-
 }

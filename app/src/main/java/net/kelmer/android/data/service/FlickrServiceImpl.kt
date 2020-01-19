@@ -1,12 +1,10 @@
 package net.kelmer.android.data.service
 
 import android.util.Log
-import net.kelmer.android.data.serializer.Serializer
-import net.kelmer.android.data.model.ApiResponse
-import net.kelmer.android.network.client.HttpClient
 import java.net.URLEncoder
-import kotlin.random.Random
-
+import net.kelmer.android.data.model.ApiResponse
+import net.kelmer.android.data.serializer.Serializer
+import net.kelmer.android.network.client.HttpClient
 
 class FlickrServiceImpl(
     private val baseUrl: String,
@@ -14,7 +12,7 @@ class FlickrServiceImpl(
     private val client: HttpClient
 ) : FlickrService {
 
-    override fun search(apiKey: String, term: String, perPage:Int, page: Int): ApiResponse {
+    override fun search(apiKey: String, term: String, perPage: Int, page: Int): ApiResponse {
         return searchRequest(apiKey, term, perPage, page)
     }
 
@@ -27,7 +25,7 @@ class FlickrServiceImpl(
         val encodedTerm = URLEncoder.encode(term, "UTF-8")
         val fullUrl =
             "$baseUrl/services/rest?method=flickr.photos.search&format=json&nojsoncallback=1&privacy_filter=0&api_key=$apiKey&text=$encodedTerm&per_page=$perPage&page=$page"
-        Log.d("RESULTTEST",fullUrl)
+        Log.d("RESULTTEST", fullUrl)
         val response = client.doGet(fullUrl)
 
         Log.i("RESULTTEST", response)

@@ -3,7 +3,6 @@ package net.kelmer.android.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.domain.Photo
 import net.kelmer.android.flickrsearch.R
 
@@ -11,11 +10,10 @@ class PhotoListAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
 
     private var photoList: List<Photo> = emptyList()
 
-    fun updateList(list: List<Photo>){
+    fun updateList(list: List<Photo>) {
         photoList = list
         notifyDataSetChanged()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)

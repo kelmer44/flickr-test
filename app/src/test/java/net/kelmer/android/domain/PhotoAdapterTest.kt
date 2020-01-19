@@ -1,11 +1,10 @@
 package net.kelmer.android.domain
 
 import net.kelmer.android.data.model.PhotoEntity
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class PhotoAdapterTest {
-
 
     @Test
     fun `When receiving a PhotoEntity, the adapter returns a Photo object with an assembled URL`() {
@@ -24,7 +23,6 @@ class PhotoAdapterTest {
         val expectedURL = "https://farm$FARM.staticflickr.com/$SERVER/${ENTITY_ID}_$SECRET.jpg"
         assertEquals(photo.id, ENTITY_ID)
         assertEquals(photo.url, expectedURL)
-
     }
 
     companion object {

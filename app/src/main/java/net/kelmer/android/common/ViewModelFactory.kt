@@ -8,6 +8,6 @@ import net.kelmer.android.ui.MainViewModel
 class ViewModelFactory(private val repository: PhotoRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return  MainViewModel(repository) as T
+        return MainViewModel(repository) as T
     }
 }

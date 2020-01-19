@@ -1,8 +1,10 @@
 package net.kelmer.android.data.service
 
+import android.util.Log
 import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.model.ApiResponse
 import net.kelmer.android.utils.client.HttpClient
+import kotlin.random.Random
 
 
 class FlickrServiceImpl(
@@ -16,6 +18,9 @@ class FlickrServiceImpl(
     }
 
     private fun searchRequest(apiKey: String, term: String): ApiResponse {
+        val sleep = Random.nextLong(0, 2000)
+        Log.v("SLEEP", "Search for $term is gonna wait $sleep")
+        Thread.sleep(sleep)
         val fullUrl =
             "$baseUrl/services/rest?method=flickr.photos.search&format=json&nojsoncallback=1&privacy_filter=0&api_key=$apiKey&text=$term"
         val response = client.doGet(fullUrl)

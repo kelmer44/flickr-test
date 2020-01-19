@@ -3,7 +3,9 @@ package net.kelmer.android.data.repository
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.domain.Photo
 import net.kelmer.android.domain.PhotoAdapter
+import net.kelmer.android.network.DeferredTaskRunner
 import net.kelmer.android.network.Task
+import net.kelmer.android.network.TaskRunner
 
 class PhotoRepositoryImpl(
     private val flickrService: FlickrService,
@@ -11,12 +13,21 @@ class PhotoRepositoryImpl(
 ) : PhotoRepository {
 
     private val adapter = PhotoAdapter()
-    override fun search(term: String): Task<List<Photo>> {
-        return object : Task<List<Photo>> {
+//    override fun search(term: String): Task<List<Photo>> {
+//        return object : Task<List<Photo>> {
+//            override fun call(): List<Photo> {
+//                val apiResponse = flickrService.getSearch(apiKey, term)
+//                return apiResponse.photos.photo.map(adapter::convert)
+//            }
+//        }
+//    }
+
+    override fun search(term: String): DeferredTaskRunner<List<Photo>> {
+        return DeferredTaskRunner(object : Task<List<Photo>> {
             override fun call(): List<Photo> {
                 val apiResponse = flickrService.getSearch(apiKey, term)
                 return apiResponse.photos.photo.map(adapter::convert)
             }
-        }
+        })
     }
 }

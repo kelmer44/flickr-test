@@ -1,11 +1,9 @@
 package net.kelmer.android.data.repository
 
-import android.os.AsyncTask
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.domain.Photo
 import net.kelmer.android.domain.PhotoAdapter
-import net.kelmer.android.network.Callback
-import java.lang.Exception
+import net.kelmer.android.network.Task
 
 class PhotoRepositoryImpl(
     private val flickrService: FlickrService,
@@ -13,14 +11,11 @@ class PhotoRepositoryImpl(
 ) : PhotoRepository {
 
     private val adapter = PhotoAdapter()
-    override fun search(term: String, callback: Callback<List<Photo>>){
-        AsyncTask.execute {
-            try {
+    override fun search(term: String): Task<List<Photo>> {
+        return object : Task<List<Photo>> {
+            override fun call(): List<Photo> {
                 val apiResponse = flickrService.getSearch(apiKey, term)
-                callback.onResponse(apiResponse.photos.photo.map(adapter::convert))
-            }
-            catch (e: Exception){
-                callback.onFailure(e)
+                return apiResponse.photos.photo.map(adapter::convert)
             }
         }
     }

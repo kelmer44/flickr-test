@@ -5,10 +5,14 @@ import net.kelmer.android.data.model.ApiResponse
 import net.kelmer.android.utils.client.HttpClient
 
 
-class FlickrServiceImpl(private val baseUrl: String, private val serializer: Serializer, private val client: HttpClient) : FlickrService {
+class FlickrServiceImpl(
+    private val baseUrl: String,
+    private val serializer: Serializer,
+    private val client: HttpClient
+) : FlickrService {
 
     override fun getSearch(apiKey: String, term: String): ApiResponse {
-           return searchRequest(apiKey, term)
+        return searchRequest(apiKey, term)
     }
 
     private fun searchRequest(apiKey: String, term: String): ApiResponse {

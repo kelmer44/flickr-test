@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             photolist_progressbar.isVisible = resource.inProgress
             resource?.resolve(
                 onError = {
-                    Toast.makeText(this, "There was an error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "There was an error: ${it.message}", Toast.LENGTH_SHORT).show();
                     Log.e("SEARCH", "Error", it)
                 },
                 onSuccess = {

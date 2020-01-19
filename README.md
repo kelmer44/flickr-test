@@ -39,6 +39,6 @@ Custom implementations for
 * Only the bare minimum functions have been developed for `HttpClient` (just get reponses), `Serializer` (just deserializing), etc.
 * If no size would be specified, `ImageFetcher` should calculate the size automatically based on the measured size of the `ImageView`. Thus the logic of bitmap decoding should be put after a callback confirming the view has been attached (so it has a width and height)
 * Ideally the Serializer would be a generic one instead of specific for this API but due to time constraints it was done this way
-  
+* The current implementation uses a `Repository` class that actually acts as a `Use Case` (or domain layer in Clean Architecture). I thought including both layers would be overengineering for this small project so I decided to skip one of them. In a full fledged project, this layer would be there to implement the actual business logic while the `Repository` would just manage the data access in case there would be multiple data sources.
 
 

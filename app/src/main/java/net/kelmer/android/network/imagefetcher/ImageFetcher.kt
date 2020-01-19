@@ -135,7 +135,7 @@ class ImageFetcher(context: Context) {
             if (b != null) {
                 image.imageView.setImageBitmap(b)
             } else {
-                image.imageView.setImageResource(R.drawable.ic_image_error)
+                image.imageView.setImageResource(R.drawable.drawable_image_error)
             }
         }
     }

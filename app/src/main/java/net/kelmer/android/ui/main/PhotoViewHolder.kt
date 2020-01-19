@@ -15,7 +15,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         ImageFetcher(itemView.context)
             .load(photo.url,
                 item_photo_image,
-                R.drawable.ic_search_white,
+                R.drawable.drawable_image_loading,
                 imageHeight)
         item_photo_title.text = photo.title
     }

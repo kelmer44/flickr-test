@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The bottom layer is blue square.-->
+    <item android:top="@dimen/double_spacing"
+        android:bottom="@dimen/double_spacing"
+        android:left="@dimen/double_spacing"
+        android:right="@dimen/double_spacing">
+        <inset
+            android:drawable="@drawable/ic_image_error"
+            />
+    </item>
+</layer-list>

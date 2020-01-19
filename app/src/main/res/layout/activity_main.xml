@@ -3,22 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="net.kelmer.android.ui.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <net.kelmer.android.ui.components.BottomScrollRecyclerview
         android:id="@+id/photolist_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:itemCount="3"
-
-        tools:listitem="@layout/item_photo" />
+        tools:itemCount="9"
+        android:layout_gravity="top"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:listitem="@layout/item_photo"
+        />
 
     <ProgressBar
         android:id="@+id/photolist_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="center"
+        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         />
 
 </FrameLayout>

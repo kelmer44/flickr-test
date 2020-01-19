@@ -4,10 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_photo.view.*
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.domain.Photo
-import net.kelmer.android.flickrsearch.R
-import net.kelmer.android.utils.imagefetcher.ImageFetcher
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

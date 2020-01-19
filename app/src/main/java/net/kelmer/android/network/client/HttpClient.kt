@@ -1,4 +1,4 @@
-package net.kelmer.android.utils.client
+package net.kelmer.android.network.client
 
 interface HttpClient {
 

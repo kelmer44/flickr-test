@@ -1,4 +1,4 @@
-package net.kelmer.android.network
+package net.kelmer.android.network.task
 
 interface Task<T> {
 

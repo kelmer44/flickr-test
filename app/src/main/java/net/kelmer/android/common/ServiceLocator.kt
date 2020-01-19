@@ -1,4 +1,4 @@
-package net.kelmer.android.util
+package net.kelmer.android.common
 
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.data.repository.PhotoRepositoryImpl
@@ -6,8 +6,8 @@ import net.kelmer.android.data.serializer.Serializer
 import net.kelmer.android.data.serializer.CustomSerializer
 import net.kelmer.android.data.service.FlickrService
 import net.kelmer.android.data.service.FlickrServiceImpl
-import net.kelmer.android.utils.client.HttpClient
-import net.kelmer.android.utils.client.StringResponseHttpClient
+import net.kelmer.android.network.client.HttpClient
+import net.kelmer.android.network.client.StringResponseHttpClient
 
 interface ServiceLocator {
 
@@ -19,7 +19,8 @@ interface ServiceLocator {
         fun instance(): ServiceLocator {
             synchronized(LOCK) {
                 if (instance == null) {
-                    instance = DefaultServiceLocator()
+                    instance =
+                        DefaultServiceLocator()
                 }
                 return instance!!
             }

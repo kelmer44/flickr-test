@@ -1,4 +1,4 @@
-package net.kelmer.android.util
+package net.kelmer.android.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,6 +1,4 @@
-package net.kelmer.android.network
-
-import java.util.concurrent.Future
+package net.kelmer.android.network.task
 
 class DeferredTaskRunner<T>(private val task: Task<T>) : TaskRunner<T>()  {
 

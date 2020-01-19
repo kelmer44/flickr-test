@@ -1,11 +1,10 @@
-package net.kelmer.android.network
+package net.kelmer.android.network.task
 
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 
 open class TaskRunner<T> {
 
@@ -21,8 +20,7 @@ open class TaskRunner<T> {
                 handler.post {
                     callback.onResponse(result)
                 }
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 handler.post {
                     callback.onFailure(e)
                 }

@@ -27,4 +27,9 @@ class PhotoListAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         holder.bind(photoList[position])
     }
+
+    fun append(items: List<Photo>) {
+        photoList = photoList.plus(items)
+        notifyDataSetChanged()
+    }
 }

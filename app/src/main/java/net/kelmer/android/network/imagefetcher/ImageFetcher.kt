@@ -1,4 +1,4 @@
-package net.kelmer.android.utils.imagefetcher
+package net.kelmer.android.network.imagefetcher
 
 import android.app.Activity
 import android.content.Context

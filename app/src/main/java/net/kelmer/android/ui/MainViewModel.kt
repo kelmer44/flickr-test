@@ -5,22 +5,26 @@ import androidx.lifecycle.ViewModel
 import net.kelmer.android.common.Resource
 import net.kelmer.android.data.repository.PhotoRepository
 import net.kelmer.android.domain.Photo
-import net.kelmer.android.network.Callback
-import net.kelmer.android.network.FutureTask
+import net.kelmer.android.domain.PhotoListPage
+import net.kelmer.android.network.task.Callback
+import net.kelmer.android.network.task.FutureTask
 
 class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() {
 
-    val photoLiveData: MutableLiveData<Resource<List<Photo>>> = MutableLiveData()
+    val photoLiveData: MutableLiveData<Resource<PhotoListPage>> = MutableLiveData()
 
     private var lastTask: FutureTask<*>? = null
-    fun search(term: String) {
+    var lastPage: PhotoListPage? = null
+
+    fun search(term: String, page: Int = 0) {
         //Cancel if there was a previous request
         lastTask?.cancel()
 
-
         photoLiveData.value = Resource.inProgress()
-        lastTask = photoRepository.search(term).execute(object : Callback<List<Photo>> {
-            override fun onResponse(data: List<Photo>) {
+        lastTask = photoRepository.search(term, page).execute(object :
+            Callback<PhotoListPage> {
+            override fun onResponse(data: PhotoListPage) {
+                lastPage = data
                 photoLiveData.value = Resource.success(data)
             }
 
@@ -33,5 +37,11 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
     override fun onCleared() {
         super.onCleared()
         lastTask?.cancel()
+    }
+
+    fun nextPage() {
+        lastPage?.run {
+            search(this.term, this.page+1)
+        }
     }
 }

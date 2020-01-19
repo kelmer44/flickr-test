@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             adapter = photoAdapter
             bottomScrollListener = object : BottomScrollRecyclerview.BottomScrollListener{
                 override fun onBottomScrollReached() {
-                    viewModel.nextPage()
+                    viewModel.loadMore()
                 }
             }
         }

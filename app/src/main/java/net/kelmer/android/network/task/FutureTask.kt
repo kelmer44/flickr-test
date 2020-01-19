@@ -6,7 +6,7 @@ import java.util.concurrent.Future
 class FutureTask<T>(private val future: Future<T>) {
 
     fun cancel(){
-        Log.i("SLEEP", "future cancelled: ${future.isCancelled} || is Done: ${future.isDone} || gonna get cancelled")
+        Log.v("RESULTTEST", "future cancelled: ${future.isCancelled} || is Done: ${future.isDone} || gonna get cancelled")
         future.cancel(true)
     }
 }

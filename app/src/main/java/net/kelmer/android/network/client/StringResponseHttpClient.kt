@@ -41,7 +41,6 @@ class StringResponseHttpClient : HttpClient {
             return readLines.joinToString("\n")
         }
         catch (e: IOException){
-            e.printStackTrace()
             throw e
         }
         finally {

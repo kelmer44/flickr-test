@@ -3,6 +3,7 @@ package net.kelmer.android.network.task
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import java.io.InterruptedIOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -18,17 +19,24 @@ open class TaskRunner<T> {
             try {
                 val result = task.call()
                 handler.post {
+                    if(Thread.interrupted()){
+                        throw InterruptedIOException("Thread interrupted!")
+                    }
                     callback.onResponse(result)
                 }
             } catch (e: Exception) {
-                handler.post {
-                    callback.onFailure(e)
+                if (e is InterruptedIOException) {
+                    Log.v(TAG, "Task was cancelled!")
+                } else {
+                    handler.post {
+                        callback.onFailure(e)
+                    }
                 }
             }
         })
     }
 
-    fun cancel(){
+    fun cancel() {
         Log.v(TAG, "Cancelling now all tasks")
         executor.shutdownNow()
     }

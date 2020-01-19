@@ -15,6 +15,7 @@ import net.kelmer.android.domain.PhotoListPage
 import net.kelmer.android.network.task.Callback
 import net.kelmer.android.network.task.FutureTask
 import net.kelmer.android.network.task.TaskRunner
+import net.kelmer.android.ui.main.MainViewModel
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals

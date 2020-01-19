@@ -1,4 +1,4 @@
-package net.kelmer.android.ui
+package net.kelmer.android.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

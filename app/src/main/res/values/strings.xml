@@ -3,4 +3,6 @@
     <string name="search">Search</string>
     <string name="api_key" translatable="false">12f7e02a64502c622306c2a9145997a6</string>
     <string name="base_url">https://api.flickr.com</string>
+    <string name="photolist_initialstate">Type in at least 3 characters to start browsing pictures</string>
+    <string name="photolist_emptystate">No photos found with this search term.</string>
 </resources>

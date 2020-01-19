@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="net.kelmer.android.ui.MainActivity">
+    tools:context="net.kelmer.android.ui.main.MainActivity">
 
     <net.kelmer.android.ui.components.BottomScrollRecyclerview
         android:id="@+id/photolist_recyclerview"
@@ -25,6 +25,24 @@
         tools:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        />
+    
+    <TextView
+        android:id="@+id/photolist_initialstate"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:layout_height="wrap_content"
+        android:text="@string/photolist_initialstate"
+        />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/photolist_emptystate"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/photolist_emptystate"
         />
 
 </FrameLayout>

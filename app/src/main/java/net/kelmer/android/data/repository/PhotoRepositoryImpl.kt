@@ -1,19 +1,29 @@
 package net.kelmer.android.data.repository
 
-import io.reactivex.Single
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.service.FlickrService
-import net.kelmer.android.domain.Photo
 import net.kelmer.android.domain.PhotoAdapter
+import net.kelmer.android.domain.PhotoListPage
+import net.kelmer.android.network.task.Task
+import net.kelmer.android.network.task.TaskRunner
+import net.kelmer.android.network.task.TaskRunnerImpl
 
-class PhotoRepositoryImpl(val service: FlickrService) : PhotoRepository {
+class PhotoRepositoryImpl(
+    private val flickrService: FlickrService,
+    private val apiKey: String
+) : PhotoRepository {
+    companion object {
+        const val PERPAGE = 20
+    }
 
     private val adapter = PhotoAdapter()
-    private val apiKey = "12f7e02a64502c622306c2a9145997a6"
-    override fun search(term: String): Single<List<Photo>> {
-       return service.getSearch(apiKey, term)
-           .map {
-               it.photos.photo.map(adapter::convert)
-           }
+
+    override fun search(term: String, page: Int): TaskRunner<PhotoListPage> {
+        return TaskRunnerImpl(object :
+            Task<PhotoListPage> {
+            override fun call(): PhotoListPage {
+                val apiResponse = flickrService.search(apiKey, term, PERPAGE, page)
+                return PhotoListPage(term, page, apiResponse.photos.photo.map(adapter::convert), page < apiResponse.photos.pages)
+            }
+        })
     }
 }

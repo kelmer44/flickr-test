@@ -2,60 +2,47 @@ package net.kelmer.android.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import net.kelmer.android.common.Resource
-import net.kelmer.android.data.model.PhotoEntity
 import net.kelmer.android.data.repository.PhotoRepository
-import net.kelmer.android.data.repository.PhotoRepositoryImpl
-import net.kelmer.android.data.service.FlickrService
-import net.kelmer.android.domain.Photo
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import net.kelmer.android.domain.PhotoListPage
+import net.kelmer.android.network.task.Callback
+import net.kelmer.android.network.task.FutureTask
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() {
 
-    private val client = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build()
-    private val service: Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.flickr.com")
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
-    private val photoRepository: PhotoRepository = PhotoRepositoryImpl(service.create(FlickrService::class.java))
+    val photoLiveData: MutableLiveData<Resource<PhotoListPage>> = MutableLiveData()
 
-    private val disposables = CompositeDisposable()
+    private var lastTask: FutureTask<*>? = null
+    var lastPage: PhotoListPage? = null
 
+    fun search(term: String, page: Int = 1) {
+        // Cancel if there was a previous request
+        lastTask?.cancel()
 
-    val photoLiveData: MutableLiveData<Resource<List<Photo>>> = MutableLiveData()
-    fun search(term: String) {
-
-        photoRepository.search(term)
-            .toFlowable()
-            .map {
-                Resource.success(it)
+        photoLiveData.value = Resource.inProgress()
+        lastTask = photoRepository.search(term, page).execute(object :
+            Callback<PhotoListPage> {
+            override fun onResponse(data: PhotoListPage) {
+                lastPage = data
+                photoLiveData.value = Resource.success(data)
             }
-            .onErrorReturn {
-                Resource.failure(it)
+
+            override fun onFailure(t: Throwable) {
+                photoLiveData.value = Resource.failure(t)
             }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .startWith(Resource.inProgress())
-            .subscribeBy(
-                onNext = {
-                    photoLiveData.value = it
-                })
-            .addTo(disposables)
+        })
     }
 
     override fun onCleared() {
         super.onCleared()
-        disposables.dispose()
+        lastTask?.cancel()
+    }
+
+    fun loadMore() {
+        lastPage?.run {
+            if (hasNextPage) {
+                search(this.term, this.page + 1)
+            }
+        }
     }
 }

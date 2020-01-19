@@ -25,10 +25,8 @@ class FlickrServiceImpl(
         val encodedTerm = URLEncoder.encode(term, "UTF-8")
         val fullUrl =
             "$baseUrl/services/rest?method=flickr.photos.search&format=json&nojsoncallback=1&privacy_filter=0&api_key=$apiKey&text=$encodedTerm&per_page=$perPage&page=$page"
-        Log.d("RESULTTEST", fullUrl)
         val response = client.doGet(fullUrl)
 
-        Log.i("RESULTTEST", response)
         return deserialize(response)
     }
 

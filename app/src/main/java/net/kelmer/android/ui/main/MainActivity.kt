@@ -46,16 +46,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.photoLiveData.observe(this, Observer { resource ->
+
             photolist_progressbar.isVisible = resource.inProgress
             resource?.resolve(
                 onError = {
-                    Toast.makeText(this, "There was an error: ${it.message}", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "There was an error: " + it.message, Toast.LENGTH_SHORT)
                         .show()
                     Log.e(TAG, "Error", it)
                 },
                 onSuccess = {
-                    Log.v(TAG, "Just got ${it.items.size} items on page ${it.page}")
                     if (it.isFirstPage()) {
+                        photolist_emptystate.isVisible = it.items.isEmpty()
                         photoAdapter.updateList(it.items)
                     } else {
                         photoAdapter.append(it.items)
@@ -63,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                 }
             )
         })
-        viewModel.search("kittens")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,9 +82,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.length > 3) {
+                if (newText.length >= 3) {
                     viewModel.search(newText)
                 }
+                photolist_recyclerview.isVisible = newText.length >= 3
+                photolist_initialstate.isVisible = newText.length < 3
                 return true
             }
         })

@@ -17,6 +17,8 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
     private var lastTask: FutureTask<*>? = null
     var lastPage: PhotoListPage? = null
 
+
+
     fun search(term: String, page: Int = 1) {
         //Cancel if there was a previous request
         lastTask?.cancel()
@@ -26,7 +28,6 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
             Callback<PhotoListPage> {
             override fun onResponse(data: PhotoListPage) {
                 lastPage = data
-                Log.w("RESULTTEST", "Got results from ${data.term} : ${data.items.map { it.title }}")
                 photoLiveData.value = Resource.success(data)
             }
 
@@ -45,9 +46,6 @@ class MainViewModel(private val photoRepository: PhotoRepository) : ViewModel() 
         lastPage?.run {
             if(hasNextPage) {
                 search(this.term, this.page + 1)
-            }
-            else {
-                Log.w("RESULTTEST", "Reached end of list!")
             }
         }
     }

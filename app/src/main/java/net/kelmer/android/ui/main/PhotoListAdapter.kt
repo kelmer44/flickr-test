@@ -1,8 +1,7 @@
-package net.kelmer.android.ui
+package net.kelmer.android.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import net.kelmer.android.domain.Photo
@@ -22,7 +21,8 @@ class PhotoListAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
 
     fun append(items: List<Photo>) {
         val newList = photoList.plus(items)
-        val diffCallback = DiffCallback(photoList, newList)
+        val diffCallback =
+            DiffCallback(photoList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         photoList.clear()
         photoList.addAll(newList)

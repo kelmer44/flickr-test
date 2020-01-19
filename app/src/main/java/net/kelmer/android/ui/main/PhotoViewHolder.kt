@@ -1,4 +1,4 @@
-package net.kelmer.android.ui
+package net.kelmer.android.ui.main
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

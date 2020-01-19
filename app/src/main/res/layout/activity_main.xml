@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="net.kelmer.android.ui.MainActivity">
+    tools:context="net.kelmer.android.ui.main.MainActivity">
 
     <net.kelmer.android.ui.components.BottomScrollRecyclerview
         android:id="@+id/photolist_recyclerview"

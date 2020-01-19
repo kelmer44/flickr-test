@@ -1,9 +1,10 @@
 package net.kelmer.android.network.imagefetcher
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -28,21 +29,22 @@ class ImageFetcher(context: Context) {
     private val fileCache = FileCache(context)
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
     private val executorService = Executors.newFixedThreadPool(5)
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
-    fun load(url: String, imageView: ImageView, @DrawableRes loader: Int) {
+    fun load(url: String, imageView: ImageView, @DrawableRes loader: Int, height: Int) {
         imageViews[imageView] = url
-        queuePhoto(url, imageView)
+        queuePhoto(url, imageView, height)
         imageView.setImageResource(loader)
     }
 
-    private fun queuePhoto(url: String, imageView: ImageView) {
-        executorService.submit(ImageLoader(ViewAndUrl(url, imageView)))
+    private fun queuePhoto(url: String, imageView: ImageView, height: Int) {
+        executorService.submit(ImageLoader(ViewAndUrl(url, imageView, height)))
     }
 
-    private fun getBitmap(url: String, width: Int, height: Int): Bitmap? {
+    private fun getBitmap(url: String, height: Int): Bitmap? {
         val f = fileCache.getFile(url)
 
-        val b = decodeFile(f, width, height)
+        val b = decodeFile(f, height)
         if (b != null) {
             return b
         }
@@ -52,32 +54,28 @@ class ImageFetcher(context: Context) {
             val connection = imageUrl.openConnection() as HttpURLConnection
             connection.instanceFollowRedirects = true
             val inputStream = connection.inputStream
-            Log.i(TAG, "Opening Output Stream for ${f.name}")
             val outputStream = FileOutputStream(f)
             copyStream(inputStream, outputStream)
             outputStream.close()
-            decodeFile(f, width, height)
+            decodeFile(f, height)
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting bitmap", e)
             null
         }
     }
 
-    private fun decodeFile(f: File, ivWidth: Int, ivHeight: Int): Bitmap? {
+    private fun decodeFile(f: File, height: Int): Bitmap? {
         try {
 
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true
-            Log.i(TAG, "Decoding bitmap for ${f.name}")
             BitmapFactory.decodeStream(FileInputStream(f), null, options)
 
             // Width and height of the bitmap
             val bmpWidth = options.outWidth
             val bmpHeight = options.outHeight
 
-            val requiredSize = ivWidth.coerceAtMost(bmpWidth)
+            val requiredSize = height.coerceAtMost(bmpHeight)
             var widthTmp = bmpWidth
-            Log.w(TAG, "For image ${f.name} bmp size is ($bmpWidth, $bmpHeight) and iv size is $ivWidth,$ivHeight, resulting size will be $requiredSize }")
             var heightTmp = bmpHeight
             var scale = 1
             while (true) {
@@ -90,7 +88,6 @@ class ImageFetcher(context: Context) {
 
             // decode
             val decodeOptions = BitmapFactory.Options()
-            Log.w(TAG, "Scale size will be $scale")
             decodeOptions.inSampleSize = scale
             return BitmapFactory.decodeStream(FileInputStream(f), null, decodeOptions)
         } catch (e: Exception) {
@@ -110,7 +107,6 @@ class ImageFetcher(context: Context) {
                 ostream.write(bytes, 0, count)
             }
         } catch (e: Exception) {
-
             Log.e(TAG, "Error copying stream", e)
         }
     }
@@ -120,9 +116,9 @@ class ImageFetcher(context: Context) {
             if (imageViewReused(image)) {
                 return
             }
-            val bmp = getBitmap(image.url, image.imageView.width, image.imageView.height)
+            val bmp = getBitmap(image.url, image.height)
             val displayer = BitmapDisplayer(bmp, image)
-            (image.imageView.context as Activity).runOnUiThread(displayer)
+            handler.post(displayer)
         }
     }
 
@@ -144,5 +140,5 @@ class ImageFetcher(context: Context) {
         }
     }
 
-    data class ViewAndUrl(val url: String, val imageView: ImageView)
+    data class ViewAndUrl(val url: String, val imageView: ImageView, val height: Int)
 }

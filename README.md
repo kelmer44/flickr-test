@@ -2,7 +2,7 @@
 
 Test app that consumes flickr photo search API.
 
-Only library in use is Google Architecture Components Lifecycle Extensions & ViewModel.
+Only library in use is Google Architecture Components Lifecycle Extensions & ViewModel (which I was confirmed could be used)
 
 Custom implementations for 
  * HTTP Client

@@ -49,14 +49,11 @@ class PhotoListAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
         override fun getNewListSize(): Int = newList.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id === newList.get(newItemPosition).id
+            return oldList[oldItemPosition].id === newList[newItemPosition].id
         }
 
         override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {
-            val (_, _, name) = oldList[oldPosition]
-            val (_, _, name1) = newList[newPosition]
-
-            return name == name1
+            return oldList[oldPosition] == newList[newPosition]
         }
 
         override fun getChangePayload(oldPosition: Int, newPosition: Int): Any? {

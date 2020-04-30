@@ -40,7 +40,7 @@ interface ServiceLocator {
 open class DefaultServiceLocator(val app: Application) : ServiceLocator {
 
 
-    override fun apiKey() = "12f7e02a64502c622306c2a9145997a6"
+    override fun apiKey() = ""
 
     override fun getRepository() : PhotoRepository {
         return PhotoRepositoryImpl(flickrService(), apiKey())
